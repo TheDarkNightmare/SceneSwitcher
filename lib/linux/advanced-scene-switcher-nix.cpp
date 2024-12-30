@@ -192,8 +192,8 @@ static std::vector<Window> getTopLevelWindows()
 			continue;
 		}
 
-		for (unsigned long i = 0; i < num; ++i) {
-			res.emplace_back(data[i]);
+		for (unsigned long j = 0; j < num; ++j) { {
+			res.emplace_back(data[j]);
 		}
 
 		XFree(data);
@@ -384,7 +384,7 @@ static void getProcessListProcps2(QStringList &processes)
 		return;
 	}
 	while ((stack = procps_pids_get_(info, PIDS_FETCH_TASKS_ONLY))) {
-		auto cmd = PIDS_VAL(0, str, stack, info);
+		auto cmd = PIDS_VAL(0, str, stack);
 		QString procName(cmd);
 		if (!procName.isEmpty() && !processes.contains(procName)) {
 			processes << procName;
@@ -500,7 +500,8 @@ int SecondsSinceLastInput()
 	idle_time = (mit_info->idle) / 1000;
 	XFree(mit_info);
 
-	return status != 0 ? idle_time : 0;
+	return status != 0 ? static_cast<int>(idle_time) : 0;
+
 }
 
 static void initXss()
